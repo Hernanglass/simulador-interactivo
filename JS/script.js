@@ -1,58 +1,71 @@
-let carrito = "";
+let productos = [
+    {
+        id: 1,
+        nombreProducto: "taza gato negro",
+        precio: 4900
+    },
 
-let nuevoOperacion = false;
+    {
+        id: 2,
+        nombreProducto: "plato mariposas",
+        precio: 6900
+    },
+    
+    {
+        id: 3,
+        nombreProducto: "plato hondo de verduras",
+        precio: 6900
+    },
 
-let producto = prompt("Ingrese que producto desea comprar (taza de gato negro, plato mariposas, plato hondo de verduras, taza de flores):");
+    {
+        id: 4,
+        nombreProducto: "taza de flores",
+        precio: 4900
+    },
+]
+let carrito = []
+let producto;
 
-let cantidad = Number(prompt(`Ingrese la cantidad de ${producto} que desea comprar:`));
-
-
-
-
-
-
-function hacerCarrito (producto, cantidad) {
-    do {
-        seleccioneProducto(producto, cantidad)
-        nuevaOperacion = confirm("Desea agregar otro producto al carrito?")
-        if (nuevaOperacion){
-            producto = prompt("Ingrese que producto desea comprar (taza gato negro, plato mariposas, plato hondo de verduras, taza de flores):");
-            cantidad = Number(prompt(`Ingrese la cantidad de ${producto} que desea comprar:`));
-        }
-    }while(nuevaOperacion)
-    console.log("Productos agregados al carrito")
-    console.log(carrito)
+function buscarProducto () {
+    let seleccion = prompt("Ingrese el nombre del producto que desee seleccionar: (taza gato negro, plato mariposas, plato hondo de verduras, taza de flores)");
+    producto = productos.find((p) => p.nombreProducto.toLowerCase() == seleccion.toLowerCase());
 }
 
 
+function agregarCarrito () {
+   if (producto) {
+    let cantidad = parseInt(prompt("Ingrese la cantidad que desea seleccionar:"));
+    carrito.push({
+        producto: producto.nombreProducto,
+        cantidad: cantidad,
+        subtotal: producto.precio * cantidad
+    })
+   }else[
+    alert("El producto seleccionado no existe. Porfavor vuelva a intentarlo")
+   ]
+}
 
 
+function confirmarCarrito () {
+    while (true) {
+        buscarProducto();
+        agregarCarrito();
 
-function seleccioneProducto(producto, cantidad){
-    
-    switch (producto.toLowerCase()) {
-        
-        case "taza gato negro":
-            carrito += `Taza gato negro - Cantidad: ${cantidad} - Precio total: ${4599 * cantidad} pesos\n`
-            break;
-    
-        case "plato mariposas":
-            carrito += `Plato mariposas - Cantidad: ${cantidad} - Precio total: ${6900 * cantidad} pesos\n`
-            break;
-
-        case "plato hondo de verduras":
-            carrito += `Plato hondo de verduras - Cantidad: ${cantidad} - Precio total: ${6900 * cantidad} pesos\n`
-            break;
-
-        case "taza de flores":
-            carrito += `Taza de flores - Cantidad: ${cantidad} - Precio total: ${4599 * cantidad} pesos\n`
-            break;
-
-        default:
-            alert("el producto ingresado no existe")
-            break;
+        if(!confirm("desea agregar otro producto al carrito?")){
+            break; 
+        }
     }
 }
 
-hacerCarrito(producto, cantidad)
-seleccioneProducto(producto, cantidad)
+function calcularTotal() {
+    console.log("Carrito de compras:")
+    carrito.forEach((item) => {
+        console.log(`- ${item.cantidad} ${item.producto} : ${item.subtotal}`)
+    })
+
+    let total = carrito.reduce((sum, item) => sum + item.subtotal, 0)
+    console.log(`´total a pagar ${total}`)
+}
+
+confirmarCarrito()
+calcularTotal()
